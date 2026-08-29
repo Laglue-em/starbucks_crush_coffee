@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <link rel="stylesheet" href="index.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap"
+      rel="stylesheet"
+    />
+
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>A coffee with me ?</title>
+  </head>
+
+  <body>
+    <div class="page">
+      <div class="quest_star">
+        <img src="quest_star.png" />
+      </div>
+
+      <div class="terminal-loader">
+        <!-- 
+             Set --n to the exact character count of your text 
+             (including spaces) for the step animation to work perfectly.
+             "Do you want to go on a date with me ?" = 39 chars
+          -->
+        <div
+          class="typewriter"
+          style="--n: 39"
+          aria-label="Do you want to go on a date with me ?"
+        >
+          Do you want to go on a date with me ?
+        </div>
+      </div>
+
+      <div class="button-group">
+        <button
+          class="btn btn-yes"
+          type="button"
+          onclick="window.location.href = 'yeah.html'"
+        >
+          YES
+        </button>
+        <button class="btn btn-no" id="btn-no" type="button">NO</button>
+      </div>
+    </div>
+
+    <script>
+      const btnNo = document.getElementById("btn-no");
+      const maxAttempts = 5;
+      let attempts = 0;
+      let isCatchable = false;
+
+      function moveButton() {
+        // Si le bouton est devenu "attrapable", on ne le fait plus fuir
+        if (isCatchable) return;
+
+        attempts++;
+
+        const btnRect = btnNo.getBoundingClientRect();
+        const margin = 20; // marge de sécurité par rapport aux bords
+
+        const maxX = window.innerWidth - btnRect.width - margin;
+        const maxY = window.innerHeight - btnRect.height - margin;
+
+        const newX = Math.random() * maxX;
+        const newY = Math.random() * maxY;
+
+        btnNo.classList.add("escaping");
+        btnNo.style.left = `${newX}px`;
+        btnNo.style.top = `${newY}px`;
+
+        // Seuil atteint : on libère le bouton
+        if (attempts >= maxAttempts) {
+          isCatchable = true;
+          releaseButton();
+        }
+      }
+
+      function releaseButton() {
+        // Remet le bouton à sa place d'origine dans la mise en page
+        btnNo.classList.remove("escaping");
+        btnNo.style.left = "";
+        btnNo.style.top = "";
+        btnNo.style.position = "";
+
+        // Petit indice visuel pour montrer que c'est enfin cliquable
+        btnNo.classList.add("catchable");
+      }
+
+      // Se déclenche dès que la souris s'approche du bouton
+      btnNo.addEventListener("mouseenter", moveButton);
+
+      // Version mobile : se déclenche au toucher (avant le clic réel)
+      btnNo.addEventListener("touchstart", function (e) {
+        if (isCatchable) return; // laisse passer le vrai clic si attrapable
+        e.preventDefault();
+        moveButton();
+      });
+
+      btnNo.addEventListener("click", function () {
+        if (isCatchable) {
+          window.location.href = "sorry.html";
+        }
+      });
+    </script>
+  </body>
+</html>

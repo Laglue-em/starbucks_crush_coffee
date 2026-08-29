@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="yeah.css" />
+    <title>Of course it's a Yes!</title>
+  </head>
+  <style>
+    .heart {
+      position: fixed;
+      top: -10%;
+      font-size: 1.5rem;
+      pointer-events: none;
+      user-select: none;
+      animation: fall linear forwards;
+      z-index: 999;
+    }
+
+    @keyframes fall {
+      to {
+        transform: translateY(110vh) rotate(360deg);
+        opacity: 0.2;
+      }
+    }
+  </style>
+
+  <script>
+    function spawnHeart() {
+      const heart = document.createElement("div");
+      heart.className = "heart";
+      heart.textContent = ["❤️", "❤️", "❤️"][Math.floor(Math.random() * 3)];
+
+      heart.style.left = Math.random() * 100 + "vw";
+      heart.style.fontSize = 1 + Math.random() * 1.5 + "rem";
+
+      const duration = 4 + Math.random() * 3; // entre 4 et 7 secondes
+      heart.style.animationDuration = duration + "s";
+
+      document.body.appendChild(heart);
+
+      // Nettoyage après la chute pour ne pas surcharger le DOM
+      setTimeout(() => heart.remove(), duration * 1000);
+    }
+
+    // Une pluie généreuse pendant les 4 premières secondes à l'ouverture
+    const rainInterval = setInterval(spawnHeart, 150);
+    setTimeout(() => clearInterval(rainInterval), 4000);
+  </script>
+  <body>
+    <div class="sorry-page">
+      <p class="eyebrow">Great!!</p>
+      <h1>SEE YOU SOON</h1>
+
+      <div class="crying-gallery">
+        <figure>
+          <figcaption></figcaption>
+          <img src="happy1.png" alt="happy" />
+        </figure>
+      </div>
+
+      <button id="btn-retry" type="button">
+        <img src="starbucks_icon.png" alt="" />
+      </button>
+    </div>
+
+    <script>
+      document.getElementById("btn-retry").addEventListener("click", () => {
+        window.location.href = "index.html"; // remplace par le nom de ta page principale
+      });
+    </script>
+  </body>
+</html>
